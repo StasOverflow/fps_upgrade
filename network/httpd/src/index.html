@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>UPS | U178.01</title>
+    <link href="assets/style.css" media="all" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+<div class="page">
+    <div class="sidebar-left">
+        <a class="title" href="/">
+            <span><img alt="Logo" src="./assets/logo.png" /></span>
+        </a>
+        <ul class="main-menu">
+            <li><a href="#status">Состояние</a></li>
+            <li><a href="#setup">Установки</a></li>
+            <li><a href="#network">Сеть</a></li>
+            <li style="display: none"><a href="#debug">Отладка</a></li>
+        </ul>
+    </div>
+
+    <div class="sidebar-right">
+        <div id="content">
+            <div class="tab-content">
+                <div class="tab" id="status">
+                    <div class="panel" id="system-panel">
+                        <div class="title">Система</div>
+                        <div class="content">
+                            <ul class="params" id="system-params">
+                                <li id="relay_1_status">
+                                    <span class="title">Реле "ALARM"</span>
+                                    <span class="units">&nbsp;</span>
+                                    <span class="value">-</span>
+                                </li>
+                                <li id="relay_2_status">
+                                    <span class="title">Реле "DISCHARGE"</span>
+                                    <span class="units">&nbsp;</span>
+                                    <span class="value">-</span>
+                                </li>
+                                <li id="relay_3_status">
+                                    <span class="title">Реле "BATTERY LOW"</span>
+                                    <span class="units">&nbsp;</span>
+                                    <span class="value">-</span>
+                                </li>
+                                <li id="sys_external_temperature">
+                                    <span class="title">Температура окружающей среды</span>
+                                    <span class="units">°C</span>
+                                    <span class="value">-</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="panel" id="input-panel">
+                        <div class="title">Вход</div>
+                        <div class="content">
+                            <table class="params" id="input-params">
+                                <thead>
+                                    <tr>
+                                        <td class="title"></td>
+                                        <td class="channel-name">A</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="title">Напряжение, В</td>
+                                        <td class="channel-value" id="input_voltage_a"><span class="value">-</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="title">Ток, А</td>
+                                        <td class="channel-value" id="input_current_a"><span class="value">-</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="title">Мощность, кВА</td>
+                                        <td class="channel-value" id="input_power_a"><span class="value">-</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            
+                        </div>
+                    </div>
+
+                    <div class="panel" id="chargers-panel">
+                        <div class="title">Зарядные устройства</div>
+                        <div class="content">
+                            <table class="params" id="chargers-debug-params">
+                                <thead>
+                                    <tr>
+                                        <td class="title"></td>
+                                        <td class="channel-name">1</td>
+                                        <td class="channel-name">2</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="title">Напряжение, В</td>
+                                        <td class="channel-value" id="charger_1_voltage"><span class="value">-</span></td>
+                                        <td class="channel-value" id="charger_2_voltage"><span class="value">-</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="title">Ток, А</td>
+                                        <td class="channel-value" id="charger_1_current"><span class="value">-</span></td>
+                                        <td class="channel-value" id="charger_2_current"><span class="value">-</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="title">Температура, °C</td>
+                                        <td class="channel-value" id="charger_1_convtemp"><span class="value">-</span></td>
+                                        <td class="channel-value" id="charger_2_convtemp"><span class="value">-</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="title">Состояние</td>
+                                        <td class="channel-value" id="charger_1_status"><span class="value">-</span></td>
+                                        <td class="channel-value" id="charger_2_status"><span class="value">-</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="panel" id="battery-panel">
+                        <div class="title">Батарея</div>
+                        <div class="content">
+                            <ul class="params" id="battery-params">
+                                <li id="battery_voltage">
+                                    <span class="title">Напряжение</span>
+                                    <span class="units">В</span>
+                                    <span class="value">-</span>
+                                </li>
+                                <li id="battery_current">
+                                    <span class="title">Ток</span>
+                                    <span class="units">А</span>
+                                    <span class="value">-</span>
+                                </li>
+                                <li id="battery_capacity_full">
+                                    <span class="title">Емкость полная</span>
+                                    <span class="units">А·ч</span>
+                                    <span class="value">-</span>
+                                </li>
+                                <li id="battery_capacity_used">
+                                    <span class="title">Емкость текущая</span>
+                                    <span class="units">А·ч</span>
+                                    <span class="value">-</span>
+                                </li>
+                                
+                                <li id="battery_temperature">
+                                    <span class="title">Температура</span>
+                                    <span class="units">°C</span>
+                                    <span class="value">-</span>
+                                </li>
+                                <li id="battery_status">
+                                    <span class="title">Состояние</span>
+                                    <span class="units">&nbsp;</span>
+                                    <span class="value">-</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="panel" id="output-dc-panel">
+                        <div class="title">Выход DC</div>
+                        <div class="content">
+                            <table class="params" id="output-dc-debug-params">
+                                <thead>
+                                    <tr>
+                                        <td class="title"></td>
+                                        <td class="channel-name">+48V</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="title">Напряжение, В</td>
+                                        <td class="channel-value" id="output_dc_1_voltage"><span class="value">-</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="title">Ток, А</td>
+                                        <td class="channel-value" id="output_dc_1_current"><span class="value">-</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="title">Мощность, Вт</td>
+                                        <td class="channel-value" id="output_dc_1_power"><span class="value">-</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="tab" id="setup">
+                    <div class="panel" id="battery-settings-form-panel">
+                        <div class="title">Установки</div>
+                        <div class="content">
+                            <form accept-charset="UTF-8" action="/cgi/setup.cgi" class="simple_form"
+                                    id="battery-settings-form" method="get" novalidate="novalidate">
+                                <div class="input float optional">
+                                    <label class="float optional control-label" for="setup_voltage_fast">Напряжение ускоренного заряда, В:</label>
+                                    <input class="numeric float optional" data-param="setup_voltage_fast" name="setup_voltage_fast" type="text" />
+                                </div>
+                                <div class="input float optional">
+                                    <label class="float optional control-label" for="setup_voltage_hold">Напряжение содержания, В:</label>
+                                    <input class="numeric float optional" data-param="setup_voltage_hold" name="setup_voltage_hold" type="text" />
+                                </div>
+                                <div class="input float optional">
+                                    <label class="float optional control-label" for="setup_current_limit">Ток заряда, А:</label>
+                                    <input class="numeric float optional" data-param="setup_current_limit" name="setup_current_limit" type="text" />
+                                </div>
+                                <div class="input float optional">
+                                    <label class="float optional control-label" for="setup_tcomp">Термокомпенсация, мВ/°C:</label>
+                                    <input class="numeric float optional" data-param="setup_tcomp" name="setup_tcomp" type="text" />
+                                </div>
+                                <div class="form-actions">
+                                    <input name="commit" type="submit" value="Применить" />
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="tab" id="network">
+                    <div class="panel" id="lan-settings-panel">
+                        <div class="title">Текущие настройки</div>
+                        <div class="content">
+                            <ul class="params" id="lan-params">
+                                <li data-param="lan_ip">
+                                    <span class="title">IP-адрес</span>
+                                    <span class="value">-</span>
+                                </li>
+                                <li data-param="lan_mask">
+                                    <span class="title">Маска подсети</span>
+                                    <span class="value">-</span>
+                                </li>
+                                <li data-param="lan_gateway">
+                                    <span class="title">Шлюз</span>
+                                    <span class="value">-</span>
+                                </li>
+                                <li data-param="lan_mac">
+                                    <span class="title">MAC-адрес</span>
+                                    <span class="value">-</span>
+                                </li>
+                                <li data-param="lan_mode">
+                                    <span class="title">Режим</span>
+                                    <span class="value">-</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="panel" id="lan-settings-form-panel">
+                        <div class="title">Установки</div>
+                        <div class="content">
+                            <form accept-charset="UTF-8" action="/cgi/lan.cgi" class="simple_form new_lan_settings" id="lan-settings-form" method="get" novalidate="novalidate">
+                                <div class="input radio_buttons optional">
+                                    <label class="radio_buttons optional control-label">Режим</label>
+                                    <label class="radio"><input class="radio_buttons optional" data-param="lan_mode" name="lan_mode" type="radio" value="Static" />Ручной</label>
+                                </div>
+                                <div class="input string optional">
+                                    <label class="string optional control-label" for="lan_ip">IP-адрес</label>
+                                    <input class="string optional" data-param="lan_ip" name="lan_ip" size="50" type="text" />
+                                </div>
+                                <div class="input string optional">
+                                    <label class="string optional control-label" for="lan_mask">Маска подсети</label>
+                                    <input class="string optional" data-param="lan_mask" name="lan_mask" size="50" type="text" />
+                                </div>
+                                <div class="input string optional">
+                                    <label class="string optional control-label" for="lan_gateway">Шлюз</label>
+                                    <input class="string optional" data-param="lan_gateway" name="lan_gateway" size="50" type="text" />
+                                </div>
+                                <div class="form-actions">
+                                    <input name="commit" type="submit" value="Применить" />
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab" id="debug">
+                    <div class="panel" id="debug-lan-panel">
+                        <div class="title">LAN</div>
+                        <div class="content">
+                            <form accept-charset="UTF-8" action="/cgi/lan.cgi" id="mac-address-form" method="get">
+                                <div class="input">
+                                    <label class="control-label" for="lan_mac">MAC-адрес устройства:</label>
+                                    <input id="lan_mac" name="lan_mac" type="text" />
+                                </div>
+                                <div class="form-actions">
+                                    <input name="commit" type="submit" value="Установить" />
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-message" id="modal-accepted">
+    <div class="message accepted">Настройки успешно сохранены</div>
+</div>
+
+<div class="modal-message" id="modal-rejected">
+    <div class="message rejected">Введенные параметры некорректны</div>
+</div>
+
+<script src="assets/action.js" type="text/javascript"></script>
+</body>
+</html>

@@ -1,0 +1,332 @@
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font: inherit;
+    font-size: 100%;
+    vertical-align: baseline;
+}
+
+html {
+    line-height: 1;
+    overflow: scroll;
+}
+
+ol, ul {
+    list-style: none
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+caption, th, td {
+    text-align: left;
+    font-weight: normal;
+    vertical-align: middle;
+}
+
+q, blockquote {
+    quotes: none;
+}
+
+q:before, q:after, blockquote:before, blockquote:after {
+    content: "";
+    content: none;
+}
+
+a img {
+    border: none;
+}
+
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary {
+    display: block;
+}
+
+html, body {
+    height: 100%;
+    min-height: 100%;
+}
+
+body {
+    background-color: #e0e0e0;
+    color: #333333;
+    font-size: 14px;
+    font-family: 'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    margin: 0;
+}
+
+a, a:active {
+    outline: none;
+}
+
+form {
+    width: 86%;
+}
+
+form .input {
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+form .form-actions {
+    text-align: right;
+}
+
+form label {
+    display: -moz-inline-stack;
+    display: inline-block;
+    vertical-align: middle;
+    width: 60%;
+    margin-top: 8px;
+}
+
+form .radio {
+    width: auto;
+}
+
+form input[type="text"], form textarea {
+    box-sizing: border-box;
+    font-size: 16px;
+    padding: 4px 6px;
+    width: 35%;
+    background-color: #fff;
+    border: 1px solid #ccc;
+
+    text-align:right;
+}
+
+form input[type="text"]:focus, form textarea:focus {
+    border-color: rgba(82, 168, 236, 0.8);
+    outline: 0 none;
+}
+
+form input[type="text"]:disabled, form textarea:disabled {
+    background-color: #eeeeee;
+}
+
+form input[type="text"] {
+    /*display: inline;*/
+    float: right;
+}
+
+form input[type="submit"] {
+    background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #159fdf), color-stop(100%, #1b84c1));
+    background-image: -webkit-linear-gradient(#159fdf, #1b84c1);
+    background-image: -moz-linear-gradient(#159fdf, #1b84c1);
+    background-image: -o-linear-gradient(#159fdf, #1b84c1);
+    background-image: linear-gradient(#159fdf, #1b84c1);
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    -ms-border-radius: 2px;
+    -o-border-radius: 2px;
+    border-radius: 2px;
+    border: 1px solid #0094dd;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.page {
+    max-width: 59em;
+    padding-left: 1em;
+    padding-right: 1em;
+    margin: 0 auto;
+    /* margin-left: auto;
+    margin-right: auto; */
+    position: relative;
+    padding-top: 20px;
+}
+
+.page:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.sidebar-left {
+    width: 28%;
+    float: left;
+    /*display: inline;*/
+    margin-left: 2%;
+    margin-right: 0
+}
+
+.sidebar-left a.title {
+    background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #39a9ea), color-stop(100%, #2890cc));
+    background-image: -webkit-linear-gradient(#39a9ea, #2890cc);
+    background-image: -moz-linear-gradient(#39a9ea, #2890cc);
+    background-image: -o-linear-gradient(#39a9ea, #2890cc);
+    background-image: linear-gradient(#39a9ea, #2890cc);
+    display: block;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 16px;
+    color: #fff;
+    padding: 10px;
+    text-decoration: none;
+    position: relative;
+}
+
+.sidebar-left a.title span {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 3px;
+}
+
+.sidebar-left .main-menu li {
+    background-color: #e8e8e8;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #d5d5d5;
+}
+
+.sidebar-left .main-menu li a {
+    padding: 10px;
+    color: #777d7c;
+    display: block;
+    height: 30px;
+    line-height: 30px;
+    font-size: 14px;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+}
+
+.sidebar-left .main-menu li.active a {
+    background-color: #fff;
+    color: #20202F;
+    border-bottom: 1px solid #f2f2f2;
+}
+
+.sidebar-right {
+    width: 70%;
+    float: right;
+    margin-right: 0;
+    /*display: inline;*/
+    background-color: #fff;
+    /*margin-bottom: 20px*/
+}
+
+.sidebar-right #content {
+    padding: 5px 10px;
+}
+
+.tab {
+    display: none;
+}
+
+.tab.active {
+    display: block;
+}
+
+.panel {
+    margin-bottom: 30px;
+}
+
+.panel>.title {
+    color: #1388cc;
+    font-size: 18px;
+    height: 30px;
+    line-height: 30px;
+    border-bottom: 2px solid #1388cc;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+ul.params li {
+    overflow: hidden;
+    padding: 10px 0;
+    border-bottom: 1px solid #f0f0fb;
+}
+
+ul.params li:first-child {
+    padding-top: 10px;
+}
+
+ul.params li .value {
+    /*display: inline;*/
+    float: right;
+    font-weight: bold;
+}
+
+ul.params li .units {
+    /*display: inline;*/
+    float: right;
+    margin-left: 5px;
+    width: 30px;
+}
+
+table.params {
+    width: 100%;
+}
+
+table.params td {
+    width: 10%;
+    padding: 10px 0;
+    border-bottom: 1px solid #f0f0fb;
+    border-right: 1px solid #f0f0fb;
+}
+
+table.params.auto td {
+    width: auto;
+}
+
+table.params tr td:last-child {
+    border-right: none;
+}
+
+table.params tbody tr:last-child td {
+}
+
+table.params td.channel-name {
+    text-align: center;
+}
+
+table.params td.channel-value {
+    text-align: center;
+}
+
+table.params td.channel-value .value {
+    font-weight: bold;
+}
+
+table.params td.title {
+    width: 30%;
+}
+
+.modal-message {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.7);
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    display: none;
+}
+
+.modal-message .message {
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -ms-border-radius: 4px;
+    -o-border-radius: 4px;
+    border-radius: 4px;
+    width: 400px;
+    padding: 20px;
+    position: relative;
+    left: 50%;
+    top: 50%;
+    margin-top: -25px;
+    margin-left: -150px;
+    background-color: #fff;
+    font-size: 22px;
+    text-align: center;
+}
+
+.modal-message .message.accepted {
+    color: #009900;
+}
+
+.modal-message .message.rejected {
+    color: #990000;
+}

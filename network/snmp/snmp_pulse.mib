@@ -1,0 +1,349 @@
+UPS-MIB DEFINITIONS ::= BEGIN
+	IMPORTS
+	enterprises, MODULE-IDENTITY, OBJECT-TYPE, Integer32, Unsigned32
+	FROM SNMPv2-SMI
+	TEXTUAL-CONVENTION
+	FROM SNMPv2-TC;
+
+	ups MODULE-IDENTITY
+		LAST-UPDATED "201712161224Z"
+		ORGANIZATION "Pulse Ltd."
+		CONTACT-INFO "www.pulse.zp.ua"
+		DESCRIPTION  "UPS U178.01"
+		REVISION     "201712161224Z"
+		DESCRIPTION  "rev.1"
+		::= { pulse 1 }
+
+	STR ::= TEXTUAL-CONVENTION
+		DISPLAY-HINT "255a"
+		STATUS       current
+		DESCRIPTION  "String value"
+		SYNTAX       OCTET STRING (SIZE (0..255))
+
+	pulse OBJECT IDENTIFIER ::= { enterprises 2 }
+	
+	--
+	-- Input
+	--
+	upsInput OBJECT IDENTIFIER ::= { ups 1 }
+	
+	upsInputTable OBJECT-TYPE
+		SYNTAX      SEQUENCE OF UpsInputEntry
+		MAX-ACCESS  not-accessible
+		STATUS      current
+		DESCRIPTION "The list of ups input entries"
+		::= { upsInput 1 }
+
+	upsInputEntry OBJECT-TYPE
+		SYNTAX      UpsInputEntry
+		MAX-ACCESS  not-accessible
+		STATUS      current
+		DESCRIPTION "The ups input entry"
+		INDEX { upsInputIndex }
+		::= { upsInputTable 1 }
+
+	UpsInputEntry ::= SEQUENCE
+	{
+		upsInputIndex INTEGER,
+		upsInputName STR,
+		upsInputVoltage INTEGER,
+		upsInputCurrent INTEGER,
+		upsInputPower INTEGER,
+		upsInputStatus INTEGER
+	}
+
+	upsInputIndex OBJECT-TYPE
+	SYNTAX      INTEGER
+	MAX-ACCESS  not-accessible
+	STATUS      current
+	DESCRIPTION "The unique value for each ups input"
+	::= { upsInputEntry 1 }
+	
+	upsInputName OBJECT-TYPE
+	SYNTAX      STR
+	MAX-ACCESS  read-only
+	STATUS      current
+	DESCRIPTION "The name of ups input"
+	::= { upsInputEntry 2 }
+
+	upsInputVoltage OBJECT-TYPE
+	SYNTAX      INTEGER
+	UNITS      "0.1V"
+	MAX-ACCESS  read-only
+	STATUS      current
+	DESCRIPTION "The input voltage"
+	::= { upsInputEntry 3 }
+	
+	upsInputCurrent OBJECT-TYPE
+	SYNTAX      INTEGER
+	UNITS      "0.1 A"
+	MAX-ACCESS  read-only
+	STATUS      current
+	DESCRIPTION "The input current"
+	::= { upsInputEntry 4 }
+
+	upsInputPower OBJECT-TYPE
+	SYNTAX      INTEGER
+	UNITS      "VA"
+	MAX-ACCESS  read-only
+	STATUS      current
+	DESCRIPTION "The input power"
+	::= { upsInputEntry 5 }
+	
+	upsInputStatus OBJECT-TYPE
+	SYNTAX INTEGER
+	{
+		fault(0),
+		ok(1)
+	}
+	MAX-ACCESS  read-only
+	STATUS      current
+	DESCRIPTION "The input status"
+	::= { upsInputEntry 6 }
+
+	--
+	-- Battery
+	--
+	upsBattery OBJECT IDENTIFIER ::= { ups 2 }
+	
+	upsBatteryVoltage OBJECT-TYPE
+	SYNTAX      INTEGER
+	UNITS      "0.1 V"
+	MAX-ACCESS  read-only
+	STATUS      current
+	DESCRIPTION "The battery voltage"
+	::= { upsBattery 1 }
+	
+	upsBatteryCurrent OBJECT-TYPE
+	SYNTAX      INTEGER
+	UNITS      "0.1 A"
+	MAX-ACCESS  read-only
+	STATUS      current
+	DESCRIPTION "The battery current. Negative value is a discharge current"
+	::= { upsBattery 2 }
+	
+	upsBatteryTemperature OBJECT-TYPE
+	SYNTAX      INTEGER
+	UNITS      "Deg"
+	MAX-ACCESS  read-only
+	STATUS      current
+	DESCRIPTION "The battery temperature"
+	::= { upsBattery 3 }
+	
+	upsBatteryFullCapacity OBJECT-TYPE
+	SYNTAX      INTEGER
+	UNITS      "Ah"
+	MAX-ACCESS  read-only
+	STATUS      current
+	DESCRIPTION "The battery capacity computed on previous discharge cycle"
+	::= { upsBattery 4 }
+	
+	upsBatteryUsedCapacity OBJECT-TYPE
+	SYNTAX      INTEGER
+	UNITS      "Ah"
+	MAX-ACCESS  read-only
+	STATUS      current
+	DESCRIPTION "The battery capacity computed on current discharge cycle"
+	::= { upsBattery 5 }
+
+	upsBatteryStatus OBJECT-TYPE
+	SYNTAX INTEGER
+	{
+		unknown(0),
+		overheat(1),
+		depleted(2),
+		disconnected(3),
+		discharge(4),
+		hold(5),
+		charge(6)
+	}
+	MAX-ACCESS  read-only
+	STATUS      current
+	DESCRIPTION "The battery status"
+	::= { upsBattery 6 }
+	
+	--
+	-- Output
+	--
+	upsOutput OBJECT IDENTIFIER ::= { ups 3 }
+
+	upsOutputTable OBJECT-TYPE
+		SYNTAX      SEQUENCE OF UpsOutputEntry
+		MAX-ACCESS  not-accessible
+		STATUS      current
+		DESCRIPTION "The list of ups output entries"
+		::= { upsOutput 1 }
+
+	upsOutputEntry OBJECT-TYPE
+		SYNTAX      UpsOutputEntry
+		MAX-ACCESS  not-accessible
+		STATUS      current
+		DESCRIPTION "The ups output entry"
+		INDEX { upsOutputIndex }
+		::= { upsOutputTable 1 }
+
+	UpsOutputEntry ::= SEQUENCE
+	{
+		upsOutputIndex INTEGER,
+		upsOutputName STR,
+		upsOutputVoltage INTEGER,
+		upsOutputCurrent INTEGER,
+		upsOutputPower INTEGER,
+		upsOutputStatus INTEGER,
+		upsOutputVoltageSetup INTEGER,
+		upsOutputCurrentLimit INTEGER
+	}
+
+	upsOutputIndex OBJECT-TYPE
+	SYNTAX      INTEGER
+	MAX-ACCESS  not-accessible
+	STATUS      current
+	DESCRIPTION "The unique value for each ups output"
+	::= { upsOutputEntry 1 }
+
+	upsOutputName OBJECT-TYPE
+	SYNTAX      STR
+	MAX-ACCESS  read-only
+	STATUS      current
+	DESCRIPTION "The name of ups output"
+	::= { upsOutputEntry 2 }
+
+	upsOutputVoltage OBJECT-TYPE
+	SYNTAX      INTEGER
+	UNITS      "0.1 V"
+	MAX-ACCESS  read-only
+	STATUS      current
+	DESCRIPTION "The output voltage"
+	::= { upsOutputEntry 3 }
+
+	upsOutputCurrent OBJECT-TYPE
+	SYNTAX      INTEGER
+	UNITS      "0.1 A"
+	MAX-ACCESS  read-only
+	STATUS      current
+	DESCRIPTION "The output current"
+	::= { upsOutputEntry 4 }
+
+	upsOutputPower OBJECT-TYPE
+	SYNTAX      INTEGER
+	UNITS      "W"
+	MAX-ACCESS  read-only
+	STATUS      current
+	DESCRIPTION "The output power"
+	::= { upsOutputEntry 5 }
+	
+	upsOutputStatus OBJECT-TYPE
+	SYNTAX INTEGER
+	{
+		unknown(0),
+		fault(1),
+		moderate(2),
+		off(3),
+		ok(4)
+	}
+	MAX-ACCESS  read-only
+	STATUS      current
+	DESCRIPTION "The output status"
+	::= { upsOutputEntry 6 }
+	
+	--
+	-- System
+	--
+	upsSystem OBJECT IDENTIFIER ::= { ups 4 }
+	
+	upsTemperature OBJECT-TYPE
+	SYNTAX      INTEGER
+	UNITS      "Deg"
+	MAX-ACCESS  read-only
+	STATUS      current
+	DESCRIPTION "The internal ups temperature"
+	::= { upsSystem 1 }
+	
+	upsBypassState OBJECT-TYPE
+	SYNTAX INTEGER
+	{
+		off(0),
+		on(1)
+	}
+	MAX-ACCESS  read-only
+	STATUS      current
+	DESCRIPTION "The bypass circuit breaker state"
+	::= { upsSystem 2 }
+	
+	upsAlarmRelayState OBJECT-TYPE
+	SYNTAX INTEGER
+	{
+		off(0),
+		on(1)
+	}
+	MAX-ACCESS  read-only
+	STATUS      current
+	DESCRIPTION "The alarm relay state"
+	::= { upsSystem 3 }
+	
+	upsDischargeRelayState OBJECT-TYPE
+	SYNTAX INTEGER
+	{
+		off(0),
+		on(1)
+	}
+	MAX-ACCESS  read-only
+	STATUS      current
+	DESCRIPTION "The discharge relay state"
+	::= { upsSystem 4 }
+	
+	--
+	-- Setup
+	--
+	upsSetup OBJECT IDENTIFIER ::= { ups 5 }
+	
+	upsBatteryFastVoltageSetup OBJECT-TYPE
+	SYNTAX      INTEGER
+	UNITS      "0.1 V"
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "The battery fast voltage setup. Must be more or equal than hold voltage"
+	::= { upsSetup 1 }
+	
+	upsBatteryHoldVoltageSetup OBJECT-TYPE
+	SYNTAX      INTEGER
+	UNITS      "0.1 V"
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "The battery hold voltage setup. Must be less or equal than fast voltage"
+	::= { upsSetup 2 }
+	
+	upsBatteryChargeCurrent OBJECT-TYPE
+	SYNTAX      INTEGER
+	UNITS      "0.1 A"
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "The battery charge current setup"
+	::= { upsSetup 3 }
+	
+	upsBatteryTempCompSetup OBJECT-TYPE
+	SYNTAX      INTEGER
+	UNITS      "mV/Deg"
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "The battery charge voltage temperature compensation"
+	::= { upsSetup 4 }
+
+	upsOutputVoltage1Setup OBJECT-TYPE
+	SYNTAX      INTEGER
+	UNITS      "0.1 V"
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "The output voltage setup for 48V#1 channel"
+	::= { upsSetup 5 }
+	
+	upsOutputVoltage2Setup OBJECT-TYPE
+	SYNTAX      INTEGER
+	UNITS      "0.1 V"
+	MAX-ACCESS  read-write
+	STATUS      current
+	DESCRIPTION "The output voltage setup for 48V#2 channel"
+	::= { upsSetup 6 }
+
+
+END
