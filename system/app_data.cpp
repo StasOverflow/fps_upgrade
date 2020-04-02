@@ -628,6 +628,6 @@ app_data_task( void *pvParameters )
     {
         app_data_task_proc();
 
-        vTaskDelay(10);
+        vTaskDelay(100);
     }
 }

@@ -1,3 +1,9 @@
+/* Scheduler includes. */
+#include "FreeRTOS.h"
+#include "task.h"
+#include "queue.h"
+#include "semphr.h"
+
 #include <stm32f2xx.h>
 #include <stm32f2xx_conf.h>
 
@@ -5,6 +11,8 @@
 #include "spi.h"
 #include "fsmc.h"
 #include "sram.h"
+
+#include "timers.h"
 
 
 #define LCD_R01                     0x01
@@ -90,6 +98,9 @@ static          short sHorizontalInc;
 static          short sVerticalInc;
 
 static uint16_t       lcd_back_light_state;
+
+
+extern TaskHandle_t interface_handler;
 
 
 uint16_t
@@ -180,11 +191,14 @@ void DMA2_Stream2_IRQHandler(void)      /* Back porch data */
 			frame_loading_done = 0;
 			lcd_unique_frames_rendered++;
 
-	        lcd_rendering_done = 1;
+//			vTaskResume
+//	        lcd_rendering_done = 1;
 		}
-	    lcd_frames_rendered++;
+
+//        PIN_CLR(LED_RED_PIN);
+        lcd_frames_rendered++;
 	}
-//	else
+	else
 	{
 	    DMA2_Stream0->CR   |= DMA_SxCR_EN;  /* Front porch stream Enable */
 	}
@@ -538,7 +552,6 @@ unsigned short LCD_HeightGet(void)
 }
 
 
-
 void TIM7_IRQHandler( void )
 {
     TIM_ClearITPendingBit(TIM7, TIM_IT_Update);
@@ -582,45 +595,68 @@ lcd_fps_tracker_init( void )
 
 }
 
+static uint16_t     tim_val = 200;
+
+void tim_val_plus( uint8_t value )
+{
+    tim_val += value;
+}
+
+void tim_val_minus( uint8_t value )
+{
+    tim_val -= value;
+}
 
 void TIM2_IRQHandler( void )
 {
-    TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
+    TIM2->ARR = tim_val;
+    TIM2->CNT = 0;
 
+    TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
 
     if( ulLineCounter == 0 )
     {
-//        DMA2_Stream0->CR   |= DMA_SxCR_EN;  /* Front porch stream Enable */
+//        vTaskSuspend(interface_handler);
+//        PIN_SET(LED_RED_PIN);
+//        if( frame_loading_done == 0)
+//        if( lcd_rendering_done )
+        {
+//            lcd_rendering_done = 0;
+        }
 
-//        lcd_rendering_done = 0;
+//        frame_loading_done = 0;
     }
+
+//    TIM2->CNT = 0;
 }
 
 
 static void
 lcd_renderer_init( void )
 {
-    TIM_TimeBaseInitTypeDef  timer;
-    NVIC_InitTypeDef  nvic;
+//    TIM_TimeBaseInitTypeDef  timer;
+//    NVIC_InitTypeDef  nvic;
+//
+//    RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);
+//
+//    // Timer Base configuration
+//    timer.TIM_Prescaler         = 5999;
+//    timer.TIM_CounterMode       = TIM_CounterMode_Up;
+//    timer.TIM_Period            = 100;
+//    timer.TIM_RepetitionCounter = 0;
+//    TIM_TimeBaseInit(TIM2, &timer);
 
-    RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);
+//    TIM_ARRPreloadConfig(TIM2, 1);
+//    TIM2->ARR = 40;
+//    TIM2->EGR = TIM_PSCReloadMode_Immediate;
 
-    //
-    // Timer Base configuration
-    //
-    timer.TIM_Prescaler         = 5999;
-    timer.TIM_CounterMode       = TIM_CounterMode_Up;
-    timer.TIM_Period            = 170;
-    timer.TIM_RepetitionCounter = 0;
-    TIM_TimeBaseInit(TIM2, &timer);
-
-    nvic.NVIC_IRQChannel = TIM2_IRQn;
-    nvic.NVIC_IRQChannelPreemptionPriority = 2;
-    nvic.NVIC_IRQChannelCmd = ENABLE;
-    NVIC_Init(&nvic);
-
-    TIM_Cmd(TIM2, ENABLE);
-    TIM_ITConfig(TIM2, TIM_IT_Update, ENABLE);
+//    nvic.NVIC_IRQChannel = TIM2_IRQn;
+//    nvic.NVIC_IRQChannelPreemptionPriority = 2;
+//    nvic.NVIC_IRQChannelCmd = ENABLE;
+//    NVIC_Init(&nvic);
+//
+//    TIM_Cmd(TIM2, ENABLE);
+//    TIM_ITConfig(TIM2, TIM_IT_Update, ENABLE);
 }
 
 
@@ -677,8 +713,6 @@ void  LCD_Init(void)
 
 	lcd_fps_tracker_init();
 }
-
-
 //*****************************************************************************
 //
 // Remap X coordinate.

@@ -594,6 +594,10 @@ inter_comm_proc( void )
         inter_comm_conn_tries++;
 
         comm_stage = Comm_Errs_Handle;
+
+#if( INCLUDE_NET == 1 )
+        vInterCommNetSettingsLoad(( *)&errs);
+#endif
         break;
 
     case Comm_Errs_Handle:
@@ -635,9 +639,8 @@ inter_comm_task( void *pvParameters )
 {
     for( ;; )
     {
-#if( INCLUDE_NET == 1 )
-        vInterCommNetSettingsLoad(&errs);
-#endif
         inter_comm_proc();
+
+        vTaskDelay(50);
     }
 }

@@ -34,7 +34,7 @@ typedef struct
 // The array of the message queue items
 //
 //*****************************************************************************
-static tMessageQueueItem sMessageQueueItems[MESSAGE_QUEUE_SIZE];
+static tMessageQueueItem message_queue_items[MESSAGE_QUEUE_SIZE];
 
 //*****************************************************************************
 //
@@ -81,8 +81,8 @@ WindowManager::MessagePost(unsigned long ulMessage, unsigned long ulParam)
     //
     // Write this message into the next location in the message queue.
     //
-    sMessageQueueItems[ulWriteIndex].ulMessage = ulMessage;
-    sMessageQueueItems[ulWriteIndex].ulParam  = ulParam;
+    message_queue_items[ulWriteIndex].ulMessage = ulMessage;
+    message_queue_items[ulWriteIndex].ulParam  = ulParam;
 
     //
     // Update the message queue write pointer.
@@ -114,8 +114,8 @@ WindowManager::MessageQueueProcess(void)
         //
         // Copy the contents of this message.
         //
-        ulMessage = sMessageQueueItems[ulReadIndex].ulMessage;
-        ulParam   = sMessageQueueItems[ulReadIndex].ulParam;
+        ulMessage = message_queue_items[ulReadIndex].ulMessage;
+        ulParam   = message_queue_items[ulReadIndex].ulParam;
 
         //
         // Remove this message from the queue.
@@ -175,7 +175,6 @@ WindowManager::MessageHandle(unsigned long ulMessage, unsigned long ulParam)
 
         ulCurrentWindowID = WindowID;
 
-
 		break;
 	}
 
@@ -212,9 +211,9 @@ WindowManager::Create(tWndID WndID)
         break;
 
 #if ( INCLUDE_NET == 1 )
-	case Window_LanSetup:
-		pWindow = new WindowLanSetup(WndID, WIDGET_ROOT);
-		break;
+//	case Window_LanSetup:
+//		pWindow = new WindowLanSetup(WndID, WIDGET_ROOT);
+//		break;
 #endif
 
     case Window_Setup_Mbus_Props:

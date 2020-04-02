@@ -28,6 +28,8 @@ uint16_t    lcd_refresh_rate_get( void );
 uint16_t    lcd_fps_get( void );
 void        LCD_Init(void);
 
+void tim_val_plus( uint8_t value );
+void tim_val_minus( uint8_t value );
 
 //*****************************************************************************
 //

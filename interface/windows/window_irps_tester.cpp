@@ -73,6 +73,8 @@ enum
     Cvs_Slave_Id_Cell,
     Cvs_Status_Panel,
 
+    Cvs_Static,
+
     Canvas_Filler,
 
     Button_Start,
@@ -101,6 +103,16 @@ struct name_param{
     char        unit[2];
 };
 
+static uint32_t      times_called_constructor;
+static uint32_t      times_called_renderer;
+
+static const char * captions[] = {
+    "Контакт Авария",
+    "Ускоренный заряд",
+    "Установка I",
+    "Установка III",
+};
+
 //*****************************************************************************
 //
 // Construcor of this window
@@ -111,7 +123,7 @@ WindowIrpsTester::WindowIrpsTester(unsigned char ucID, Widget *pParent)
 {
     Canvas                      *cvs;
 
-
+    times_called_constructor++;
     this->adjust_timer = xTaskGetTickCount();
 
     cvs = new Canvas(Cvs_Front_Panel, this, 0, 0, 320, 240);
@@ -143,8 +155,14 @@ WindowIrpsTester::WindowIrpsTester(unsigned char ucID, Widget *pParent)
         this->button[i]->ulPressFillColor = SELECTION_COLOR;
     }
 
-    cvs = new Canvas(Canvas_Main, this, 0,  0, 320, 240);
-    cvs->ulStyle = CANVAS_STYLE_PAINT_NOTIFY;
+    for( uint8_t i = 0; i < 4; i++ )
+    {
+        cvs = new Canvas(Cvs_Static, this, 130, 30 + 50*i, 150, 21);
+        cvs->ulStyle = CANVAS_STYLE_TEXT_LEFT | CANVAS_STYLE_TEXT;
+        cvs->ulTextColor = SERVICE_INFO_TEXT_CLR;
+        cvs->pFont = g_pFontWCourier21pt;
+        cvs->pcText = (char *) captions[i];
+    }
 
     this->adjust_timer = xTaskGetTickCount();
 }
@@ -166,9 +184,10 @@ WindowIrpsTester::inner_context_render(tContext * context)
     uint16_t            gap_x;
     char                string[32];
 
+//    times_called_renderer++;
 
-    GrContextForegroundSet(context, SERVICE_INFO_TEXT_CLR);
     GrContextFontSet(context, g_pFontWCourier21pt);
+    GrContextForegroundSet(context, SERVICE_INFO_TEXT_CLR);
 
     gap_x  = 130;
     gap_y  = 30;
@@ -222,6 +241,16 @@ WindowIrpsTester::inner_context_render(tContext * context)
     gap_y = 222;
     usprintf(string, "%d", lcd_fps_get());
     GrStringDraw(context, string, -1, gap_x, gap_y, 0);
+
+    gap_x = 32;
+    gap_y = 210;
+    usprintf(string, "%d", times_called_constructor);
+    GrStringDraw(context, string, -1, gap_x, gap_y, 0);
+
+    gap_x = 32;
+    gap_y = 222;
+    usprintf(string, "%d", TIM2->ARR);
+    GrStringDraw(context, string, -1, gap_x, gap_y, 0);
 }
 
 //*****************************************************************************
@@ -250,7 +279,7 @@ WindowIrpsTester::MessageProc(unsigned long ulMsg, unsigned long ulParam1,
 
         switch( ulParam1 )
         {
-        case Canvas_Main:
+        case Cvs_Front_Panel:
             this->inner_context_render(&context);
             break;
 
@@ -265,6 +294,9 @@ WindowIrpsTester::MessageProc(unsigned long ulMsg, unsigned long ulParam1,
         {
         case Btn_Bg_Setup_Fast:
         case Btn_Setup_F:
+            tim_val_plus(1);
+
+
             this->unprsd = 0;
             if( this->curr_btn_pressed == Btn_Setup_F )
             {
@@ -280,6 +312,8 @@ WindowIrpsTester::MessageProc(unsigned long ulMsg, unsigned long ulParam1,
 
         case Btn_Bg_Setup_1:
         case Btn_Setup_1:
+            tim_val_minus(1);
+
             this->unprsd = 0;
             if( this->curr_btn_pressed == Btn_Setup_1 )
             {

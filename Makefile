@@ -290,6 +290,9 @@ $(BINDIR)/$(PROJECT).elf: $(OBJDIR)/httpd.o
 #$(BINDIR)/$(PROJECT).elf: ${OBJDIR}/debug_property.o
 #$(BINDIR)/$(PROJECT).elf: ${OBJDIR}/heater_property.o
 
+$(BINDIR)/$(PROJECT).elf: ${OBJDIR}/timers.o
+
+
 #
 # Main section
 #

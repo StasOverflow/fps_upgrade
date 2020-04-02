@@ -352,6 +352,21 @@ WindowMain::inner_context_render(tContext * context)
     gap_y = 222;
     usprintf(string, "%d", lcd_fps_get());
     GrStringDraw(context, string, -1, gap_x, gap_y, 0);
+
+    gap_x = 30;
+    gap_y = 222;
+    usprintf(string, "%d", TIM7->ARR);
+    GrStringDraw(context, string, -1, gap_x, gap_y, 0);
+
+
+    RCC_ClocksTypeDef clks;
+
+    RCC_GetClocksFreq(&clks);
+
+    gap_x = 30;
+    gap_y = 210;
+    usprintf(string, "%d", clks.PCLK1_Frequency);
+    GrStringDraw(context, string, -1, gap_x, gap_y, 0);
 //
 //    for( uint8_t i = 0; i < 10; i++ )
 //    {
@@ -447,8 +462,13 @@ WindowMain::MessageProc(unsigned long ulMsg, unsigned long ulParam1,
             break;
 
         case Btn_Slave_Addr_Plus:
+            tim_val_plus(1);
+            app_data_item_adjust(APPDATA_MBUS_SLAVE_ID, 1);
+            break;
+
         case Btn_Slave_Addr_Minus:
-            app_data_item_adjust(APPDATA_MBUS_SLAVE_ID, (ulParam1 == Btn_Slave_Addr_Minus) ? -1 : 1);
+            tim_val_minus(1);
+            app_data_item_adjust(APPDATA_MBUS_SLAVE_ID, -1);
             break;
 
         default:

@@ -52,6 +52,13 @@
 #include "images/img_icon_conn_connecting_alarm.c"
 #include "images/img_icon_conn_connected_alarm.c"
 
+#include "timers.h"
+
+
+extern TaskHandle_t interface_handler;
+extern TaskHandle_t display_handler;
+static WindowManager    *manager;
+
 //*****************************************************************************
 //
 // Сodepage mapping functions
@@ -81,24 +88,14 @@ const static tGrLibDefaults g_psGrLibSettingDefaults =
 static
 void InterfaceUpdateProc( void )
 {
-	extern volatile unsigned char   frame_loading_done;
-	extern volatile uint16_t        lcd_frames_rendered;
-	extern volatile uint8_t         frame_draw_available;
-	extern volatile uint8_t         lcd_rendering_done;
-
 	static uint8_t      times_updated = 0;
 
-	if( !frame_loading_done )
 	{
 //	    if( times_updated < 63 )
 	    {
 	        times_updated++;
 
-            PIN_SET(LED_RED_PIN);
             WIDGET_ROOT->Update();
-            PIN_CLR(LED_RED_PIN);
-
-            frame_loading_done = 1;
 	    }
 //	    else
 //	    {
@@ -109,6 +106,7 @@ void InterfaceUpdateProc( void )
 	}
 }
 
+
 //*****************************************************************************
 //
 // Interface main task
@@ -117,7 +115,8 @@ void InterfaceUpdateProc( void )
 void InterfaceTask( void *pvParameters )
 {
 	static TickType_t       xBacklightOnTimer;
-	static WindowManager    *manager;
+    extern volatile unsigned char   frame_loading_done;
+
 
 //	/* Await for notify to launch */
 //    ulTaskNotifyTake( pdTRUE, portMAX_DELAY );
@@ -157,8 +156,8 @@ void InterfaceTask( void *pvParameters )
 	manager = new WindowManager();
 
 	/* Post show window message and handle it */
-	manager->MessagePost(WM_MSG_SHOW, Window_Irps_Tester);
-//    manager->MessagePost(WM_MSG_SHOW, Window_Main);
+//    manager->MessagePost(WM_MSG_SHOW, Window_Irps_Tester);
+    manager->MessagePost(WM_MSG_SHOW, Window_Main);
 
 	/* Start LCD */
 	DisplayEnable();
@@ -167,20 +166,26 @@ void InterfaceTask( void *pvParameters )
 
 	for( ;; )
 	{
-		if( !DisplayBacklightStateGet() )
-		{
-			/* Wait some time before backlight turning on */
-			if( (xTaskGetTickCount() - xBacklightOnTimer) >= 250 )
-			{
-				/* Turn ON backlight */
-				DisplayBacklightStateSet(1);
-			}
-		}
+        if( !DisplayBacklightStateGet() )
+        {
+            /* Wait some time before turning on backlight */
+            if( (xTaskGetTickCount() - xBacklightOnTimer) >= 250 )
+            {
+                /* Turn ON backlight */
+                DisplayBacklightStateSet(1);
+            }
+        }
 
-		/* Process any messages in the widget message queue */
-		WIDGET_ROOT->MessageQueueProcess();
-		manager->MessageQueueProcess();
+        /* Process any messages in the widget message queue */
+        WIDGET_ROOT->MessageQueueProcess();
+        manager->MessageQueueProcess();
 
-        InterfaceUpdateProc();
+        if( !frame_loading_done )
+        {
+            InterfaceUpdateProc();
+            frame_loading_done = 1;
+        }
+
+        vTaskSuspend(interface_handler);
 	}
 }
