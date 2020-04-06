@@ -31,6 +31,10 @@
 
 #define mainWEBSERVER_PRIORITY      ( tskIDLE_PRIORITY + 2 )
 
+#define DMA_F_PORCH_TIME            5
+#define DMA_TIME                    7
+#define BUFFER_FILL_TICK_TIME       4
+
 QueueHandle_t      xGrnLedQueue;
 
 
@@ -92,27 +96,35 @@ TimerHandle_t dma_timer;
 
 void vTimerCallback( TimerHandle_t xTimer  )
 {
-    static uint8_t     trigger;
+    static enum {
+        Render_Start,
+        Render_Suspend,
+        Render_Resume,
+    } render_sequence;
 
-
-    if( trigger )
+    switch( render_sequence )
     {
-        vTaskSuspend(interface_handler);
-
-        xTimerChangePeriod( dma_timer, 13, 0 );
-        DMA2_Stream0->CR   |= DMA_SxCR_EN;  /* Front porch stream Enable */
-
-//        PIN_SET(LED_RED_PIN);
-    }
-    else
-    {
+    case Render_Start:
         vTaskResume(interface_handler);
-        xTimerChangePeriod( dma_timer, 4, 0 );
-    }
-    xTimerStart( dma_timer, 0 );
+        xTimerChangePeriod( dma_timer, DMA_F_PORCH_TIME, 0 );
+        DMA2_Stream0->CR   |= DMA_SxCR_EN;  /* Front porch stream Enable */
+        render_sequence = Render_Suspend;
+        break;
 
-    GPIO_WriteBit(GPIOE, GPIO_Pin_2, (trigger == 0) ? Bit_SET : Bit_RESET);
-    trigger ^= 1;
+    case Render_Suspend:
+        vTaskSuspend(interface_handler);
+        xTimerChangePeriod( dma_timer, DMA_TIME, 0 );
+        render_sequence = Render_Resume;
+        break;
+
+    case Render_Resume:
+        vTaskResume(interface_handler);
+        xTimerChangePeriod( dma_timer, BUFFER_FILL_TICK_TIME, 0 );
+        render_sequence = Render_Start;
+        break;
+    }
+//    GPIO_WriteBit(GPIOE, GPIO_Pin_2, (trigger == 0) ? Bit_SET : Bit_RESET);
+//    trigger ^= 1;
 
 }
 

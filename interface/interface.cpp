@@ -90,20 +90,9 @@ void InterfaceUpdateProc( void )
 {
 	static uint8_t      times_updated = 0;
 
-	{
-//	    if( times_updated < 63 )
-	    {
-	        times_updated++;
+    times_updated++;
 
-            WIDGET_ROOT->Update();
-	    }
-//	    else
-//	    {
-//            PIN_SET(LED_RED_PIN);
-//	        vTaskDelay(30);
-//            PIN_CLR(LED_RED_PIN);
-//	    }
-	}
+    WIDGET_ROOT->Update();
 }
 
 
@@ -185,7 +174,5 @@ void InterfaceTask( void *pvParameters )
             InterfaceUpdateProc();
             frame_loading_done = 1;
         }
-
-        vTaskSuspend(interface_handler);
 	}
 }
