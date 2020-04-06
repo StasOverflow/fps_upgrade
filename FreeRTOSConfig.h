@@ -29,7 +29,7 @@
 //#define configQUEUE_REGISTRY_SIZE                10
 
 #define configUSE_TIMERS                         1
-#define configTIMER_TASK_PRIORITY                2
+#define configTIMER_TASK_PRIORITY                3
 #define configTIMER_QUEUE_LENGTH                 10
 #define configTIMER_TASK_STACK_DEPTH             configMINIMAL_STACK_SIZE
 

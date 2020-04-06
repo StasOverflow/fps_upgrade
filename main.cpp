@@ -31,8 +31,8 @@
 
 #define mainWEBSERVER_PRIORITY      ( tskIDLE_PRIORITY + 2 )
 
-#define DMA_F_PORCH_TIME            5
-#define DMA_TIME                    7
+#define DMA_F_PORCH_TIME            2
+#define DMA_TIME                    10
 #define BUFFER_FILL_TICK_TIME       4
 
 QueueHandle_t      xGrnLedQueue;

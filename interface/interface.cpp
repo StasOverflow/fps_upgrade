@@ -145,8 +145,8 @@ void InterfaceTask( void *pvParameters )
 	manager = new WindowManager();
 
 	/* Post show window message and handle it */
-//    manager->MessagePost(WM_MSG_SHOW, Window_Irps_Tester);
-    manager->MessagePost(WM_MSG_SHOW, Window_Main);
+    manager->MessagePost(WM_MSG_SHOW, Window_Irps_Tester);
+//    manager->MessagePost(WM_MSG_SHOW, Window_Main);
 
 	/* Start LCD */
 	DisplayEnable();
